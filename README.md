@@ -24,8 +24,12 @@ import wikirefs_plugin from 'markdown-it-wikirefs';
 
 const md = markdownIt();
 const options = {
+  resolveHtmlHref: (env: any, fname: string) => {
+      const extname: string = wikirefs.isMedia(fname) ? path.extname(fname) : '';
+      fname = fname.replace(extname, '');
+      return '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + extname;
+    },replace(/ /g, '-').replace(/[^\w-]+/g, ''),
   resolveHtmlText: (env: any, fname: string) => fname.replace(/-/g, ' '),
-  resolveHtmlHref: (env: any, fname: string) => '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, ''),
   resolveEmbedContent: (env: any, fname: string) => fname + ' content',
 };
 md.use(wikirefs_plugin, options);

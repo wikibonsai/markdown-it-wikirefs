@@ -1,8 +1,8 @@
 // import
-
+import path from 'path';
 import { merge } from 'lodash';
-
 import type MarkdownIt from 'markdown-it/lib';
+import * as wikirefs from 'wikirefs';
 
 import type {
   WikiRefsOptions,
@@ -23,7 +23,11 @@ function wikirefs_plugin(md: MarkdownIt, opts?: Partial<WikiRefsOptions>): void 
   // opts
   const defaults: WikiRefsOptions = {
     resolveHtmlText: (env: any, fname: string) => fname.replace(/-/g, ' '),
-    resolveHtmlHref: (env: any, fname: string) => '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, ''),
+    resolveHtmlHref: (env: any, fname: string) => {
+      const extname: string = wikirefs.isMedia(fname) ? path.extname(fname) : '';
+      fname = fname.replace(extname, '');
+      return '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + extname;
+    },
     resolveEmbedContent: (env: any, fname: string) => fname + ' content',
     baseUrl: '',
     cssNames: {
