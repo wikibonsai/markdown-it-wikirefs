@@ -117,25 +117,33 @@ describe('markdown-it-wikirefs', () => {
         // todo: 'inCycle'
         // note: it ain't pretty, but it gets the job done...
         resolveEmbedContent: (env: any, filename: string): (string | undefined) => {
+          // markdown-only
+          if (wikirefs.isMedia(filename)) { return; }
           // cycle detection
-          if (!env.cycleStack) { env.cycleStack = []; }
-          else { if (env.cycleStack.includes(filename)) { return 'cycle detected'; }}
+          if (!env.cycleStack) {
+            env.cycleStack = [];
+          } else {
+            if (env.cycleStack.includes(filename)) {
+              // reset stack before leaving
+              delete env.cycleStack;
+              return 'cycle detected';
+            }
+          }
+          env.cycleStack.push(filename);
+          // get content
           const fakeFile: TestFileData | undefined = fileDataMap.find((fileData: TestFileData) => fileData.filename === filename);
           const mkdnContent: string | undefined = fakeFile ? fakeFile.content : undefined;
-          // markdown-only
-          if (!wikirefs.isMedia(filename)) {
-            env.cycleStack.push(filename);
-            let htmlContent: string | undefined;
-            if (mkdnContent === undefined) {
-              htmlContent = undefined;
-            } else if (mkdnContent.length === 0) {
-              htmlContent = '';
-            } else {
-              htmlContent = md.render(mkdnContent, env);
-            }
-            delete env.cycleStack;
-            return htmlContent;
+          let htmlContent: string | undefined;
+          if (mkdnContent === undefined) {
+            htmlContent = undefined;
+          } else if (mkdnContent.length === 0) {
+            htmlContent = '';
+          } else {
+            htmlContent = md.render(mkdnContent, env);
           }
+          // reset stack before leaving
+          delete env.cycleStack;
+          return htmlContent;
         },
       });
     env = { absPath: '/tests/fixtures/file-with-wikilink.md' };
