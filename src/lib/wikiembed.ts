@@ -12,7 +12,12 @@ import type { WikiEmbedsOptions } from '../util/types';
 export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
 
   // rulers
-  md.inline.ruler.before('wikilink', 'wikiembed', mixed);
+  const wikiLinkRule: any = md.block.ruler.getRules('wikilink');
+  if (wikiLinkRule.length === 0) {
+    md.inline.ruler.before('link', 'wikiembed', mixed);
+  } else {
+    md.inline.ruler.before('wikilink', 'wikiembed', mixed);
+  }
   // render
   md.renderer.rules.metadata_wikiembed              = metadata_wikiembed;
   md.renderer.rules.wikiembed_open                  = wikiembed_open;
