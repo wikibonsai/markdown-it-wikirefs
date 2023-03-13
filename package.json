@@ -1,6 +1,6 @@
 {
   "name": "markdown-it-wikirefs",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "markdown-it plugin to add wikirefs (including [[wikilinks]])",
   "license": "GPL-3.0",
   "author": {
