@@ -25,10 +25,10 @@ import wikirefs_plugin from 'markdown-it-wikirefs';
 const md = markdownIt();
 const options = {
   resolveHtmlHref: (env: any, fname: string) => {
-      const extname: string = wikirefs.isMedia(fname) ? path.extname(fname) : '';
-      fname = fname.replace(extname, '');
-      return '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + extname;
-    },replace(/ /g, '-').replace(/[^\w-]+/g, ''),
+    const extname: string = wikirefs.isMedia(fname) ? path.extname(fname) : '';
+    fname = fname.replace(extname, '');
+    return '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + extname;
+  },
   resolveHtmlText: (env: any, fname: string) => fname.replace(/-/g, ' '),
   resolveEmbedContent: (env: any, fname: string) => fname + ' content',
 };
