@@ -156,7 +156,7 @@ A function which takes in markdown-it's `env` var and the `fname` extracted from
 
 ### `resolveHtmlHref: (env: any, fname: string) => string | undefined`
 
-A function which takes in markdown-it's `env` var and the `fname` extracted from a wikilink `[[fname]]`. It should return the url of the wikilink-ed file or `undefined` if no such file exists. If no such file exists, the wikilink will render as a disabled and marked invalid. (Relevant file data should be stored in `env`, but if not `fname` can be used to search for the file instead.)
+A function which takes in markdown-it's `env` var and the `fname` extracted from a wikilink `[[fname]]`. It should return the url of the wikilink-ed file or `undefined` if no such file exists. If no such file exists, the wikilink will render as disabled and marked as invalid. (Relevant file data should be stored in `env`, but if not `fname` can be used to search for the file instead.)
 
 It is recommended to override the default, but there is a default returns: `'/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')`.
 
