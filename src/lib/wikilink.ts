@@ -10,7 +10,7 @@ import type { WikiLinksOptions } from '../util/types';
 export const wikilinks = (md: MarkdownIt, opts: WikiLinksOptions): void => {
 
   // rulers
-  md.inline.ruler.after('link', 'wikilink', inline);
+  md.inline.ruler.after('link', 'wikilink', wikilink);
   // render
   md.renderer.rules.metadata_wikilink = metadata_wikilink;
   md.renderer.rules.wikilink_open     = wikilink_open;
@@ -19,7 +19,7 @@ export const wikilinks = (md: MarkdownIt, opts: WikiLinksOptions): void => {
 
   // rulers
 
-  function inline(state: StateInline, silent: boolean): boolean {
+  function wikilink(state: StateInline, silent: boolean): boolean {
     const srcText: string = state.src.substring(state.pos);
 
     // process match info

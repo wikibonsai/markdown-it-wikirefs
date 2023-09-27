@@ -23,7 +23,7 @@ export const wikiattrs = (md: MarkdownIt, opts: WikiAttrsOptions): void => {
   }
   // should execute just after 'markdown-it-caml': 
   // [ ..., 'hr', 'caml', 'wikiattr', 'list', ... ]
-  md.block.ruler.before('list', 'wikiattr', block, { alt: ['paragraph', 'attrs' ] });  // in case bugs show up: [ 'paragraph', 'reference', 'blockquote', 'list' ]
+  md.block.ruler.before('list', 'wikiattr', wikiattr, { alt: [ 'paragraph', 'reference', 'blockquote', 'list', 'attrs' ] });  // in case bugs show up: [ 'paragraph', 'reference', 'blockquote', 'list' ]
   // render
   md.renderer.rules.metadata_wikiattr = metadata_wikiattr;
   md.renderer.rules.wikiattr_open     = wikiattr_open;
@@ -33,7 +33,7 @@ export const wikiattrs = (md: MarkdownIt, opts: WikiAttrsOptions): void => {
 
   // rulers
 
-  function block(state: StateBlock, startLine: number, endLine: number, silent: boolean): boolean {
+  function wikiattr(state: StateBlock, startLine: number, endLine: number, silent: boolean): boolean {
     // from: https://github.com/markdown-it/markdown-it/blob/df4607f1d4d4be7fdc32e71c04109aea8cc373fa/lib/rules_block/list.js#L132
     // if it's indented more than 3 spaces, it should be a code block
     if (state.sCount[startLine] - state.blkIndent >= 4) { return false; }

@@ -14,9 +14,9 @@ export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
   // rulers
   const wikiLinkRule: any = md.block.ruler.getRules('wikilink');
   if (wikiLinkRule.length === 0) {
-    md.inline.ruler.before('link', 'wikiembed', mixed);
+    md.inline.ruler.before('link', 'wikiembed', wikiembed);
   } else {
-    md.inline.ruler.before('wikilink', 'wikiembed', mixed);
+    md.inline.ruler.before('wikilink', 'wikiembed', wikiembed);
   }
   // render
   md.renderer.rules.metadata_wikiembed              = metadata_wikiembed;
@@ -41,7 +41,7 @@ export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
   // rulers
 
   // parsed as 'inline', but renders as a pseudo-'block'
-  function mixed(state: StateInline, silent: boolean): boolean {
+  function wikiembed(state: StateInline, silent: boolean): boolean {
     const srcText: string = state.src.substring(state.pos);
 
     // process match info
