@@ -34,22 +34,26 @@ export const wikiattrs = (md: MarkdownIt, opts: WikiAttrsOptions): void => {
   // rulers
 
   function wikiattr(state: StateBlock, startLine: number, endLine: number, silent: boolean): boolean {
+    // return false cases //
+
+    ////
+    // skip indented code blocks
     // from: https://github.com/markdown-it/markdown-it/blob/df4607f1d4d4be7fdc32e71c04109aea8cc373fa/lib/rules_block/list.js#L132
     // if it's indented more than 3 spaces, it should be a code block
     if (state.sCount[startLine] - state.blkIndent >= 4) { return false; }
-
-    // 'bMarks' = beginning of line markers
-    // 'eMarks' = end of line markers
-    let pos: number = state.bMarks[startLine];
-    let max: number = state.eMarks[startLine];
-
-    // return false cases //
-
+    ////
     // 'wikiattrs' must be at the top-most-level
+    // todo: how to interrupt?
     // !('list' | 'blockquote' | 'reference' | 'footnote')
     if ((state.parentType !== 'root') && (state.parentType !== 'paragraph')) {
       return false;
     }
+    ////
+    // check for matches
+    // 'bMarks' = beginning of line markers
+    // 'eMarks' = end of line markers
+    let pos: number = state.bMarks[startLine];
+    let max: number = state.eMarks[startLine];
     const thisChunk: string = state.src.substring(pos, max);
     const lineOneMatch: RegExpExecArray | null = wikirefs.RGX.ATTR_LINE.TYPE.exec(thisChunk);
     // no match
@@ -60,8 +64,8 @@ export const wikiattrs = (md: MarkdownIt, opts: WikiAttrsOptions): void => {
     // note: this is only necessary for unprefixed wikiattrs
     // todo: keep an eye on this...might cause problems...
     if ((lineOneMatch[0].indexOf('- ') === 0)
-    || (lineOneMatch[0].indexOf('* ') === 0)
-    || (lineOneMatch[0].indexOf('+ ') === 0)
+     || (lineOneMatch[0].indexOf('* ') === 0)
+     || (lineOneMatch[0].indexOf('+ ') === 0)
     ) {
       return false;
     }
