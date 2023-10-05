@@ -139,6 +139,8 @@ describe('markdown-it-wikirefs', () => {
           } else if (mkdnContent.length === 0) {
             htmlContent = '';
           } else {
+            // reset attrs for embeds
+            env.attrs = {};
             htmlContent = md.render(mkdnContent, env);
           }
           // reset stack before leaving
