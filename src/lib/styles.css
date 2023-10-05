@@ -46,7 +46,7 @@ a[href] {
 a[href]:visited {
   color: purple;
 }
-/* (internal) wikilinks */
+/* (internal) wiki links */
 a.wiki[href] {
   color: #3e5c50;
 }
@@ -111,8 +111,8 @@ a.invalid {
   width: 100%;
 }
 .embed-image {
-  height: 50%;
-  width: 50%;
+  height: 75%;
+  width: 75%;
 }
 .embed-video {
   height: 75%;
