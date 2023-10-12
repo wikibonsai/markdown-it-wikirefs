@@ -58,7 +58,7 @@
     "sinon": "^14.0.0",
     "ts-node": "^10.7.0",
     "typescript": "^4.5.5",
-    "wikirefs-spec": "^0.0.3"
+    "wikirefs-spec": "^0.0.4-spec"
   },
   "keywords": [
     "bidirectional link",
