@@ -92,6 +92,7 @@ describe('configs', () => {
         html: '<p>![[fname-a]].</p>\n',
       },
     ] as TestCase[]);
+
     run('wikilinks', [
       {
         descr: 'wikiattr; prefixed',
@@ -118,6 +119,7 @@ describe('configs', () => {
         html: '<p>!<a class="wiki link" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a>.</p>\n',
       },
     ] as TestCase[]);
+
     run('wikiembeds', [
       {
         descr: 'wikiattr; prefixed',
