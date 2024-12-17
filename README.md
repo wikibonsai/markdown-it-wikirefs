@@ -49,7 +49,7 @@ const wikirefs_plugin = require('markdown-it-wikirefs').default;
 
 ## Syntax
 
-For syntax specifications, see the [wikirefs](https://github.com/wikibonsai/wikirefs) repo.
+For syntax specifications, see the [wikirefs-spec](https://github.com/wikibonsai/wikirefs/tree/main/spec) repo.
 
 ## Option recommendations
 
