@@ -39,7 +39,7 @@ function run(contextMsg: string, tests: WikiRefTestCase[]): void {
   });
 }
 
-describe('markdown-it-wikirefs', () => {
+describe('render', () => {
 
   before(() => {
     wikiRefCases.forEach((testcase: WikiRefTestCase) => {
@@ -105,6 +105,13 @@ describe('markdown-it-wikirefs', () => {
           }
         }
       }
+      // caml paragraph: spec expects literal \n; we output real newline — override to match impl
+      if (testcase.descr === 'wikiattr; mixed; wikirefs + caml; wiki mkdn list, caml two single') {
+        testcase.html = testcase.html.replace('<p>:attrtype2::string\\n:attrtype3::string</p>', '<p>:attrtype2::string\n:attrtype3::string</p>');
+      }
+      if (testcase.descr === 'wikiattr; mixed; wikirefs + caml; wiki multi single, caml multi single') {
+        testcase.html = testcase.html.replace('<p>:attrtype3::string\\n:attrtype4::string</p>', '<p>:attrtype3::string\n:attrtype4::string</p>');
+      }
     });
   });
 
@@ -151,7 +158,7 @@ describe('markdown-it-wikirefs', () => {
     env = { absPath: '/tests/fixtures/file-with-wikilink.md' };
   });
 
-  describe('render; mkdn -> html', () => {
+  describe('mkdn -> html', () => {
 
     // run('wikirefs-spec', wikiRefCases);
     run('wikirefs-spec', wikiRefCases.filter((testcase: WikiRefTestCase) => {

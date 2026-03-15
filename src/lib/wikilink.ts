@@ -35,9 +35,8 @@ export const wikilinks = (md: MarkdownIt, opts: WikiLinksOptions): void => {
     const matchText      : string        = match[0];
     const linkTypeText   : string | null = match[1] ? match[1].trim() : match[1];
     const filenameText   : string        = match[2];
-    // const headerText     : string        = match[4];
-    // const blockText      : string        = match[5];
-    const labelText      : string | null = match[3];
+    const headerText     : string | undefined = match[3];
+    const labelText      : string | null = match[4] ?? null;
 
     // handle early kick-out if we've hit a stop-char early //
     //  untyped
@@ -66,11 +65,17 @@ export const wikilinks = (md: MarkdownIt, opts: WikiLinksOptions): void => {
     if (linkTypeText !== null && linkTypeText !== undefined && linkTypeText.length !== 0) {
       token.attrSet('linktype', linkTypeText);
     }
+    if (headerText !== undefined && headerText.length > 0) {
+      token.attrSet('header', headerText);
+    }
 
     // body //
     token = state.push('wikilink_body', '', 0);
     token.attrSet('filename', filenameText);
     token.attrSet('matchText', matchText);
+    if (headerText !== undefined && headerText.length > 0) {
+      token.attrSet('header', headerText);
+    }
     if (labelText) { token.attrSet('label', labelText); }
 
     // close //
@@ -122,8 +127,9 @@ export const wikilinks = (md: MarkdownIt, opts: WikiLinksOptions): void => {
     if (token === null) { return invalidOpen; }
     const filename: string | null = token.attrGet('filename');
     const linktype: string | null = token.attrGet('linktype');
+    const header: string | null = token.attrGet('header');
     if (filename === null) { return invalidOpen; }
-    const htmlHref: string | undefined = opts.resolveHtmlHref(env, filename);
+    let htmlHref: string | undefined = opts.resolveHtmlHref(env, filename);
     const doctype: string | undefined  = opts.resolveDocType ? opts.resolveDocType(env, filename)  : '';
     // render
     // invalid
@@ -131,6 +137,9 @@ export const wikilinks = (md: MarkdownIt, opts: WikiLinksOptions): void => {
       return invalidOpen;
     // valid
     } else {
+      if (header !== null && header.length > 0) {
+        htmlHref = htmlHref + '#' + wikirefs.slugify(header);
+      }
       // build css string
       const cssClassArray: string[] = [];
       // wikilink

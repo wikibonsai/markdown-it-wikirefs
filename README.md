@@ -60,7 +60,7 @@ For render output:
 
 For `wikiembeds` -- note:
 - [`path.extname(filename)`](https://nodejs.org/api/path.html#pathextnamepath) is used to identify the file extension which determines how the embed should be formatted.
-- Check for self-references and cycles when defining [`opts.resolveEmbedContent()`]().
+- Check for self-references and cycles when defining [`opts.resolveEmbedContent()`](#resolveembedcontent-env-any-fname-string--string--undefined).
 
 For metadata population:
 - `addAttr`
@@ -159,7 +159,7 @@ A function which takes in markdown-it's `env` var and the `fname` extracted from
 
 A function which takes in markdown-it's `env` var and the `fname` extracted from a wikilink `[[fname]]`. It should return the url of the wikilink-ed file or `undefined` if no such file exists. If no such file exists, the wikilink will render as disabled and marked as invalid. (Relevant file data should be stored in `env`, but if not `fname` can be used to search for the file instead.)
 
-It is recommended to override the default, but there is a default returns: `'/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')`.
+It is recommended to override the default, but there is a default which returns: `'/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '')`.
 
 ### `resolveHtmlText: (env: any, fname: string) => string | undefined`
 

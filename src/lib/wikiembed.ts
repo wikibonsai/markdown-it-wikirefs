@@ -49,8 +49,9 @@ export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
     if ((match == null) || (match.length < 1) || (match.index !== 0)) {
       return false;
     }
-    const matchText      : string        = match[0];
-    const filenameText   : string        = match[1];
+    const matchText      : string             = match[0];
+    const filenameText   : string             = match[1];
+    const headerText     : string | undefined = match[2];
 
     // "Don't run any pairs in validation mode":
     // 'silent' is used when this rule is being checked against 
@@ -63,24 +64,34 @@ export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
 
     let token: Token;
 
+    const setHeader = (t: Token): void => {
+      if (headerText !== undefined && headerText.length > 0) {
+        t.attrSet('header', headerText);
+      }
+    };
+
     // open embed //
     token = state.push('wikiembed_open', 'wikiembed', 0);
     token.attrSet('filename', filenameText);
+    setHeader(token);
 
     // body
     if (wikirefs.isMedia(filenameText)) {
       token = state.push('wikiembed_content_body_media', 'wikiembed', 0);
       token.attrSet('filename', filenameText);
+      setHeader(token);
     // process as markdown (may contain invalid media extensions)
     } else {
       // title //
       token = state.push('wikiembed_title_open', 'wikiembed', 0);
       token = state.push('wikiembed_title_body', 'wikiembed', 0);
       token.attrSet('filename', filenameText);
+      setHeader(token);
       token = state.push('wikiembed_title_close', 'wikiembed', 0);
       // link //
       token = state.push('wikiembed_link_open', 'wikiembed', 0);
       token.attrSet('filename', filenameText);
+      setHeader(token);
       token = state.push('wikiembed_link_body', 'wikiembed', 0);
       token.attrSet('filename', filenameText);
       token = state.push('wikiembed_link_close', 'wikiembed', 0);
@@ -88,12 +99,14 @@ export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
       token = state.push('wikiembed_content_open', 'wikiembed', 0);
       token = state.push('wikiembed_content_body_md', 'wikiembed', 0);
       token.attrSet('filename', filenameText);
+      setHeader(token);
       token = state.push('wikiembed_content_close', 'wikiembed', 0);
     }
 
     // close embed //
     token = state.push('wikiembed_close', 'wikiembed', 0);
     token.attrSet('filename', filenameText);
+    setHeader(token);
 
     // metadata
     if (opts.addEmbed) {
@@ -196,14 +209,18 @@ export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
     const token: Token | null = tokens[index];
     if (token === null) { return 'token error'; }
     const filename : string | null = token.attrGet('filename');
+    const header    : string | null = token.attrGet('header');
     if (filename === null) { return 'filename error'; }
-    const htmlHref: string | undefined = opts.resolveHtmlHref(env, filename);
+    let htmlHref: string | undefined = opts.resolveHtmlHref(env, filename);
     const htmlText: string | undefined = opts.resolveHtmlText(env, filename) ? opts.resolveHtmlText(env, filename) : filename;
     const doctype: string | undefined  = opts.resolveDocType                 ? opts.resolveDocType(env, filename)  : '';
     // render
     if (htmlHref === undefined) {
       return `<a class="${opts.cssNames.wiki} ${opts.cssNames.embed} ${opts.cssNames.invalid}">\n${htmlText}\n</a>\n`;
     } else {
+      if (header !== null && header.length > 0) {
+        htmlHref = htmlHref + '#' + wikirefs.slugify(header);
+      }
       // build css string
       const cssClassArray: string[] = [];
       cssClassArray.push(opts.cssNames.wiki);
@@ -232,14 +249,18 @@ export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
     const invalidOpen: string = `<div class="${opts.cssNames.embedLink}">\n<a class="${opts.cssNames.embedLinkIcon} ${opts.cssNames.invalid}">\n`;
     if (token === null) { return invalidOpen; }
     const filename: string | null = token.attrGet('filename');
+    const header: string | null = token.attrGet('header');
     if (filename === null) { return invalidOpen; }
     // render
-    const htmlHref: string | undefined = opts.resolveHtmlHref(env, filename);
+    let htmlHref: string | undefined = opts.resolveHtmlHref(env, filename);
     // invalid
     if (htmlHref === undefined) {
       return invalidOpen;
     // valid
     } else {
+      if (header !== null && header.length > 0) {
+        htmlHref = htmlHref + '#' + wikirefs.slugify(header);
+      }
       return `<div class="${opts.cssNames.embedLink}">\n<a class="${opts.cssNames.embedLinkIcon}" href="${opts.baseUrl + htmlHref}" data-href="${opts.baseUrl + htmlHref}">\n`;
     }
   }
