@@ -37,56 +37,48 @@ export const markdownItCases: TestCase[] = [
   {
     descr: 'markdown-it-specific; wikiattr; prefixed; w/ stop chars; kebab-case; single',
     mkdn: ':link-type::[[fname-a]]\n',
-    html:
-`<aside class="attrbox">
-<span class="attrbox-title">Attributes</span>
-<dl>
-<dt>link-type</dt>
-<dd><a class="attr wiki reftype__link-type" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></dd>
-</dl>
-</aside>
-`,
+    html: '<aside class="attrbox">\n'
+        + '<span class="attrbox-title">Attributes</span>\n'
+        + '<dl>\n'
+        + '<dt>link-type</dt>\n'
+        + '<dd><a class="attr wiki reftype__link-type" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></dd>\n'
+        + '</dl>\n'
+        + '</aside>\n',
   },
   {
     descr: 'markdown-it-specific; wikiattr; prefixed; w/ stop chars; kebab-case; multi',
     mkdn: ':link-type-again::[[fname-a]]\n',
-    html:
-`<aside class="attrbox">
-<span class="attrbox-title">Attributes</span>
-<dl>
-<dt>link-type-again</dt>
-<dd><a class="attr wiki reftype__link-type-again" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></dd>
-</dl>
-</aside>
-`,
+    html: '<aside class="attrbox">\n'
+        + '<span class="attrbox-title">Attributes</span>\n'
+        + '<dl>\n'
+        + '<dt>link-type-again</dt>\n'
+        + '<dd><a class="attr wiki reftype__link-type-again" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></dd>\n'
+        + '</dl>\n'
+        + '</aside>\n',
   },
   {
     descr: 'markdown-it-specific; wikiattr; prefixed; w/ stop chars; snake_case',
     mkdn: ':link_type::[[fname-a]]\n',
-    html:
-`<aside class="attrbox">
-<span class="attrbox-title">Attributes</span>
-<dl>
-<dt>link_type</dt>
-<dd><a class="attr wiki reftype__link_type" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></dd>
-</dl>
-</aside>
-`,
+    html: '<aside class="attrbox">\n'
+        + '<span class="attrbox-title">Attributes</span>\n'
+        + '<dl>\n'
+        + '<dt>link_type</dt>\n'
+        + '<dd><a class="attr wiki reftype__link_type" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></dd>\n'
+        + '</dl>\n'
+        + '</aside>\n',
   },
   // todo: maybe come back to this...
   {
     descr: 'markdown-it-specific; wikiattr; prefixed; w/ stop chars; &',
     error: true,
     mkdn: ':link&type::[[fname-a]]\n',
-    html:
-`<aside class="attrbox">
-<span class="attrbox-title">Attributes</span>
-<dl>
-<dt>link&type</dt>
-<dd><a class="attr wiki reftype__linktype" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></dd>
-</dl>
-</aside>
-`,
+    html: '<aside class="attrbox">\n'
+        + '<span class="attrbox-title">Attributes</span>\n'
+        + '<dl>\n'
+        + '<dt>link&type</dt>\n'
+        + '<dd><a class="attr wiki reftype__linktype" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></dd>\n'
+        + '</dl>\n'
+        + '</aside>\n',
   },
   // bugs
   {

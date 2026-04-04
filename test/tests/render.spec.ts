@@ -55,53 +55,49 @@ describe('render', () => {
           // typed
           if (testcase.descr.includes('; typed;')) {
             testcase.html =
-`<p>Here is<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> <a class="wiki link type reftype__linktype1" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a>.</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>A footnote with <a class="wiki link type reftype__linktype2" href="/tests/fixtures/fname-b" data-href="/tests/fixtures/fname-b">title b</a>. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-`;
+              '<p>Here is<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> <a class="wiki link type reftype__linktype1" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a>.</p>\n'
+            + '<hr class="footnotes-sep">\n'
+            + '<section class="footnotes">\n'
+            + '<ol class="footnotes-list">\n'
+            + '<li id="fn1" class="footnote-item"><p>A footnote with <a class="wiki link type reftype__linktype2" href="/tests/fixtures/fname-b" data-href="/tests/fixtures/fname-b">title b</a>. <a href="#fnref1" class="footnote-backref">\u21a9\ufe0e</a></p>\n'
+            + '</li>\n'
+            + '</ol>\n'
+            + '</section>\n';
           }
           // untyped
           if (testcase.descr.includes('; untyped;')) {
             testcase.html =
-`<p>Here is<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> <a class="wiki link" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a>.</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>A footnote with <a class="wiki link" href="/tests/fixtures/fname-b" data-href="/tests/fixtures/fname-b">title b</a>. <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-`;
+              '<p>Here is<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup> <a class="wiki link" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a>.</p>\n'
+            + '<hr class="footnotes-sep">\n'
+            + '<section class="footnotes">\n'
+            + '<ol class="footnotes-list">\n'
+            + '<li id="fn1" class="footnote-item"><p>A footnote with <a class="wiki link" href="/tests/fixtures/fname-b" data-href="/tests/fixtures/fname-b">title b</a>. <a href="#fnref1" class="footnote-backref">\u21a9\ufe0e</a></p>\n'
+            + '</li>\n'
+            + '</ol>\n'
+            + '</section>\n';
           }
           // wikiattrs not allowed inside
           if (testcase.descr === 'wikiattr; prefixed; w/ other mkdn constructs; nested; gfm; footnote') {
             testcase.html =
-`<p><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p><a class="wiki link type reftype__attrtype" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-`;
+              '<p><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>\n'
+            + '<hr class="footnotes-sep">\n'
+            + '<section class="footnotes">\n'
+            + '<ol class="footnotes-list">\n'
+            + '<li id="fn1" class="footnote-item"><p><a class="wiki link type reftype__attrtype" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a> <a href="#fnref1" class="footnote-backref">\u21a9\ufe0e</a></p>\n'
+            + '</li>\n'
+            + '</ol>\n'
+            + '</section>\n';
           }
           if (testcase.descr === 'wikiattr; unprefixed; w/ other mkdn constructs; nested; gfm; footnote') {
             testcase.html =
-`<p><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>attrtype::<a class="wiki link" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a> <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-`;
+              '<p><sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup></p>\n'
+            + '<hr class="footnotes-sep">\n'
+            + '<section class="footnotes">\n'
+            + '<ol class="footnotes-list">\n'
+            + '<li id="fn1" class="footnote-item"><p>attrtype::<a class="wiki link" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a> <a href="#fnref1" class="footnote-backref">\u21a9\ufe0e</a></p>\n'
+            + '</li>\n'
+            + '</ol>\n'
+            + '</section>\n';
           }
         }
       }
@@ -112,65 +108,63 @@ describe('render', () => {
       // wikiembed footnote: spec has placeholder; supply markdown-it footnote HTML
       if (testcase.descr === 'wikiembed; w/ other mkdn constructs; gfm; footnote') {
         testcase.html =
-`<p>
-<p>
-<div class="embed-wrapper">
-<div class="embed-title">
-<a class="wiki embed" href="/tests/fixtures/embed-doc-mkdn-footnote" data-href="/tests/fixtures/embed-doc-mkdn-footnote">
-embed doc mkdn footnote
-</a>
-</div>
-<div class="embed-link">
-<a class="embed-link-icon" href="/tests/fixtures/embed-doc-mkdn-footnote" data-href="/tests/fixtures/embed-doc-mkdn-footnote">
-<i class="link-icon"></i>
-</a>
-</div>
-<div class="embed-content">
-<p>Body<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>note text <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-</div>
-</div>
-</p>
-</p>
-`;
+              '<p>\n'
+            + '<p>\n'
+            + '<div class="embed-wrapper">\n'
+            + '<div class="embed-title">\n'
+            + '<a class="wiki embed" href="/tests/fixtures/embed-doc-mkdn-footnote" data-href="/tests/fixtures/embed-doc-mkdn-footnote">\n'
+            + 'embed doc mkdn footnote\n'
+            + '</a>\n'
+            + '</div>\n'
+            + '<div class="embed-link">\n'
+            + '<a class="embed-link-icon" href="/tests/fixtures/embed-doc-mkdn-footnote" data-href="/tests/fixtures/embed-doc-mkdn-footnote">\n'
+            + '<i class="link-icon"></i>\n'
+            + '</a>\n'
+            + '</div>\n'
+            + '<div class="embed-content">\n'
+            + '<p>Body<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>\n'
+            + '<hr class="footnotes-sep">\n'
+            + '<section class="footnotes">\n'
+            + '<ol class="footnotes-list">\n'
+            + '<li id="fn1" class="footnote-item"><p>note text <a href="#fnref1" class="footnote-backref">\u21a9\ufe0e</a></p>\n'
+            + '</li>\n'
+            + '</ol>\n'
+            + '</section>\n'
+            + '\n'
+            + '</div>\n'
+            + '</div>\n'
+            + '</p>\n'
+            + '</p>\n';
       }
       if (testcase.descr === 'wikiembed; w/ other mkdn constructs; header; gfm; section w/ footnote') {
         testcase.html =
-`<p>
-<p>
-<div class="embed-wrapper">
-<div class="embed-title">
-<a class="wiki embed" href="/tests/fixtures/embed-doc-header-mkdn#footnote" data-href="/tests/fixtures/embed-doc-header-mkdn#footnote">
-embed doc header constructs
-</a>
-</div>
-<div class="embed-link">
-<a class="embed-link-icon" href="/tests/fixtures/embed-doc-header-mkdn#footnote" data-href="/tests/fixtures/embed-doc-header-mkdn#footnote">
-<i class="link-icon"></i>
-</a>
-</div>
-<div class="embed-content">
-<p>Body<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
-<hr class="footnotes-sep">
-<section class="footnotes">
-<ol class="footnotes-list">
-<li id="fn1" class="footnote-item"><p>note text <a href="#fnref1" class="footnote-backref">↩︎</a></p>
-</li>
-</ol>
-</section>
-
-</div>
-</div>
-</p>
-</p>
-`;
+              '<p>\n'
+            + '<p>\n'
+            + '<div class="embed-wrapper">\n'
+            + '<div class="embed-title">\n'
+            + '<a class="wiki embed" href="/tests/fixtures/embed-doc-header-mkdn#footnote" data-href="/tests/fixtures/embed-doc-header-mkdn#footnote">\n'
+            + 'embed doc header constructs\n'
+            + '</a>\n'
+            + '</div>\n'
+            + '<div class="embed-link">\n'
+            + '<a class="embed-link-icon" href="/tests/fixtures/embed-doc-header-mkdn#footnote" data-href="/tests/fixtures/embed-doc-header-mkdn#footnote">\n'
+            + '<i class="link-icon"></i>\n'
+            + '</a>\n'
+            + '</div>\n'
+            + '<div class="embed-content">\n'
+            + '<p>Body<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>\n'
+            + '<hr class="footnotes-sep">\n'
+            + '<section class="footnotes">\n'
+            + '<ol class="footnotes-list">\n'
+            + '<li id="fn1" class="footnote-item"><p>note text <a href="#fnref1" class="footnote-backref">\u21a9\ufe0e</a></p>\n'
+            + '</li>\n'
+            + '</ol>\n'
+            + '</section>\n'
+            + '\n'
+            + '</div>\n'
+            + '</div>\n'
+            + '</p>\n'
+            + '</p>\n';
       }
       // setext header section: we include content under setext h2 (no ATX match); override to match impl
       if (testcase.descr === 'wikiembed; w/ other mkdn constructs; header; setext h1 (=)') {
