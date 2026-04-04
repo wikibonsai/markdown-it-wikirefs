@@ -86,6 +86,9 @@ export const wikilinks = (md: MarkdownIt, opts: WikiLinksOptions): void => {
       token = state.push('metadata_wikilink', 'wikilink', 0);
       token.attrSet('linktype', linkTypeText);
       token.attrSet('filename', filenameText);
+      if (headerText !== undefined && headerText.length > 0) {
+        token.attrSet('header', headerText);
+      }
     }
 
     // continue; increment position
@@ -103,8 +106,9 @@ export const wikilinks = (md: MarkdownIt, opts: WikiLinksOptions): void => {
     // don't let 'linktype' be 'null' -- untyped wikilinks have empty strings for 'linktype'
     const linktype: string | null = token.attrGet('linktype') ? token.attrGet('linktype') : '';
     const filename: string | null = token.attrGet('filename');
+    const header: string | null = token.attrGet('header');
     if ((linktype !== null) && (filename !== null) && opts.addLink) {
-      opts.addLink(env, linktype, filename);
+      opts.addLink(env, linktype, filename, header ?? undefined);
     }
     return '';
   }

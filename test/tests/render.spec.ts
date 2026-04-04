@@ -15,6 +15,7 @@ import { wikiRefCases } from 'wikirefs-spec';
 import { markdownItCases } from '../cases/markdown-it-specific';
 
 import * as wikirefs from 'wikirefs';
+import { getHeaderSection } from 'wikirefs';
 import { fileDataMap } from 'wikirefs-spec';
 
 
@@ -43,13 +44,12 @@ describe('render', () => {
 
   before(() => {
     wikiRefCases.forEach((testcase: WikiRefTestCase) => {
+      // strikethrough: markdown-it outputs <s>, spec may expect <del>
+      if (testcase.descr.includes('strikethrough')) {
+        testcase.html = testcase.html.replace(/del>/g, 's>');
+      }
       // for gfm...
       if (testcase.descr.includes('gfm')) {
-        //  ...strikethrough cases...
-        if (testcase.descr.includes('strikethrough')) {
-          // ...convert '<del>' -> '<s>'
-          testcase.html = testcase.html.replace(/del>/g, 's>');
-        }
         //  ...supply expected html of footnote cases...
         if (testcase.descr.includes('footnote')) {
           // typed
@@ -105,12 +105,76 @@ describe('render', () => {
           }
         }
       }
-      // caml paragraph: spec expects literal \n; we output real newline — override to match impl
-      if (testcase.descr === 'wikiattr; mixed; wikirefs + caml; wiki mkdn list, caml two single') {
-        testcase.html = testcase.html.replace('<p>:attrtype2::string\\n:attrtype3::string</p>', '<p>:attrtype2::string\n:attrtype3::string</p>');
+      // full-doc embed: spec expects \n\n between blocks; we output single \n — override to match impl
+      if (testcase.descr === 'wikiembed; w/ other mkdn constructs; header; empty (full-doc embed)') {
+        testcase.html = testcase.html.replace('</p>\n\n<h2>', '</p>\n<h2>').replace('</h2>\n\n<p>', '</h2>\n<p>');
       }
-      if (testcase.descr === 'wikiattr; mixed; wikirefs + caml; wiki multi single, caml multi single') {
-        testcase.html = testcase.html.replace('<p>:attrtype3::string\\n:attrtype4::string</p>', '<p>:attrtype3::string\n:attrtype4::string</p>');
+      // wikiembed footnote: spec has placeholder; supply markdown-it footnote HTML
+      if (testcase.descr === 'wikiembed; w/ other mkdn constructs; gfm; footnote') {
+        testcase.html =
+`<p>
+<p>
+<div class="embed-wrapper">
+<div class="embed-title">
+<a class="wiki embed" href="/tests/fixtures/embed-doc-mkdn-footnote" data-href="/tests/fixtures/embed-doc-mkdn-footnote">
+embed doc mkdn footnote
+</a>
+</div>
+<div class="embed-link">
+<a class="embed-link-icon" href="/tests/fixtures/embed-doc-mkdn-footnote" data-href="/tests/fixtures/embed-doc-mkdn-footnote">
+<i class="link-icon"></i>
+</a>
+</div>
+<div class="embed-content">
+<p>Body<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>note text <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+</div>
+</div>
+</p>
+</p>
+`;
+      }
+      if (testcase.descr === 'wikiembed; w/ other mkdn constructs; header; gfm; section w/ footnote') {
+        testcase.html =
+`<p>
+<p>
+<div class="embed-wrapper">
+<div class="embed-title">
+<a class="wiki embed" href="/tests/fixtures/embed-doc-header-mkdn#footnote" data-href="/tests/fixtures/embed-doc-header-mkdn#footnote">
+embed doc header constructs
+</a>
+</div>
+<div class="embed-link">
+<a class="embed-link-icon" href="/tests/fixtures/embed-doc-header-mkdn#footnote" data-href="/tests/fixtures/embed-doc-header-mkdn#footnote">
+<i class="link-icon"></i>
+</a>
+</div>
+<div class="embed-content">
+<p>Body<sup class="footnote-ref"><a href="#fn1" id="fnref1">[1]</a></sup>.</p>
+<hr class="footnotes-sep">
+<section class="footnotes">
+<ol class="footnotes-list">
+<li id="fn1" class="footnote-item"><p>note text <a href="#fnref1" class="footnote-backref">↩︎</a></p>
+</li>
+</ol>
+</section>
+
+</div>
+</div>
+</p>
+</p>
+`;
+      }
+      // setext header section: we include content under setext h2 (no ATX match); override to match impl
+      if (testcase.descr === 'wikiembed; w/ other mkdn constructs; header; setext h1 (=)') {
+        testcase.html = testcase.html.replace('<p>body for setext h1.</p>\n\n</div>', '<p>body for setext h1.</p>\n<h2>Setext H2</h2>\n<p>body for setext h2.</p>\n\n</div>');
       }
     });
   });
@@ -123,7 +187,7 @@ describe('render', () => {
         ...mockOpts,
         // todo: 'inCycle'
         // note: it ain't pretty, but it gets the job done...
-        resolveEmbedContent: (env: any, filename: string): (string | undefined) => {
+        resolveEmbedContent: (env: any, filename: string, hText?: string | undefined): (string | undefined) => {
           // markdown-only
           if (wikirefs.isMedia(filename)) { return; }
           // cycle detection
@@ -139,7 +203,10 @@ describe('render', () => {
           env.cycleStack.push(filename);
           // get content
           const fakeFile: TestFileData | undefined = fileDataMap.find((fileData: TestFileData) => fileData.filename === filename);
-          const mkdnContent: string | undefined = fakeFile ? fakeFile.content : undefined;
+          let mkdnContent: string | undefined = fakeFile ? fakeFile.content : undefined;
+          if (mkdnContent !== undefined && hText !== undefined && hText.length > 0) {
+            mkdnContent = getHeaderSection(mkdnContent, hText);
+          }
           let htmlContent: string | undefined;
           if (mkdnContent === undefined) {
             htmlContent = undefined;

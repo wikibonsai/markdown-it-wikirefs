@@ -28,7 +28,7 @@ function wikirefs_plugin(md: MarkdownIt, opts?: Partial<WikiRefsOptions>): void 
       fname = fname.replace(extname, '');
       return '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + extname;
     },
-    resolveEmbedContent: (env: any, fname: string) => fname + ' content',
+    resolveEmbedContent: (env: any, fname: string, hText?: string | undefined) => fname + ' content',
     baseUrl: '',
     cssNames: {
       // wiki

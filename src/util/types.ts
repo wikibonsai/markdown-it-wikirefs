@@ -53,11 +53,11 @@ export interface WikiRefsOptions extends MarkdownIt.Options {
   resolveHtmlHref: (env: any, fname: string) => string | undefined;
   resolveDocType?: (env: any, fname: string) => string | undefined;
   // embed-only
-  resolveEmbedContent: (env: any, fname: string) => string | undefined;
+  resolveEmbedContent: (env: any, fname: string, hText?: string | undefined) => string | undefined;
   // metadata functions
   addAttr?: (env: any, attrtype: string, fname: string) => void;
-  addLink?: (env: any, linktype: string, fname: string) => void;
-  addEmbed?: (env: any, fname: string) => void;
+  addLink?: (env: any, linktype: string, fname: string, header?: string) => void;
+  addEmbed?: (env: any, fname: string, header?: string) => void;
   // render opts
   baseUrl: string;
   cssNames: OptCssNames;
@@ -89,7 +89,7 @@ export interface WikiLinksOptions extends MarkdownIt.Options {
   resolveHtmlHref: (env: any, fname: string) => string | undefined;
   resolveDocType?: (env: any, fname: string) => string | undefined;
   // metadata functions
-  addLink?: (env: any, linktype: string, fname: string) => void;
+  addLink?: (env: any, linktype: string, fname: string, header?: string) => void;
   // render opts
   baseUrl: string;
   cssNames: OptCssNames;
@@ -103,9 +103,9 @@ export interface WikiEmbedsOptions extends MarkdownIt.Options {
   resolveHtmlText: (env: any, fname: string) => string | undefined;
   resolveHtmlHref: (env: any, fname: string) => string | undefined;
   resolveDocType?: (env: any, fname: string) => string | undefined;
-  resolveEmbedContent: (env: any, fname: string) => string | undefined;
+  resolveEmbedContent: (env: any, fname: string, hText?: string | undefined) => string | undefined;
   // metadata functions
-  addEmbed?: (env: any, fname: string) => void;
+  addEmbed?: (env: any, fname: string, header?: string) => void;
   // render opts
   baseUrl: string;
   cssNames: OptCssNames;

@@ -112,6 +112,9 @@ export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
     if (opts.addEmbed) {
       token = state.push('metadata_wikiembed', 'wikiembed', 0);
       token.attrSet('filename', filenameText);
+      if (headerText !== undefined && headerText.length > 0) {
+        token.attrSet('header', headerText);
+      }
     }
 
     // continue; increment position
@@ -174,8 +177,9 @@ export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
     if (token === null) { return 'token error'; }
     // don't let 'linktype' be 'null' -- untyped wikiembeds have empty strings for 'linktype'
     const filename: string | null = token.attrGet('filename');
+    const header: string | null = token.attrGet('header');
     if ((filename !== null) && opts.addEmbed) {
-      opts.addEmbed(env, filename);
+      opts.addEmbed(env, filename, header ?? undefined);
     }
     return '';
   }
@@ -292,7 +296,8 @@ export const wikiembeds = (md: MarkdownIt, opts: WikiEmbedsOptions): void => {
     if (token === null) { return 'token error'; }
     const filename : string | null = token.attrGet('filename');
     if (filename === null) { return opts.embeds.errorContent + '\'' + filename + '\''; }
-    const htmlContent: string | undefined = opts.resolveEmbedContent(env, filename);
+    const hText: string | null = token.attrGet('header');
+    const htmlContent: string | undefined = opts.resolveEmbedContent(env, filename, hText ?? undefined);
     // render
     token.content = htmlContent ? htmlContent : opts.embeds.errorContent + '\'' + filename + '\'';
     return token.content + '\n';

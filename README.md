@@ -31,7 +31,7 @@ const options = {
     return '/' + fname.trim().toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '') + extname;
   },
   resolveHtmlText: (env: any, fname: string) => fname.replace(/-/g, ' '),
-  resolveEmbedContent: (env: any, fname: string) => fname + ' content',
+  resolveEmbedContent: (env: any, fname: string, hText?: string | undefined) => fname + ' content',
 };
 md.use(wikirefs_plugin, options);
 md.render('[[wikilink]]');
@@ -60,7 +60,7 @@ For render output:
 
 For `wikiembeds` -- note:
 - [`path.extname(filename)`](https://nodejs.org/api/path.html#pathextnamepath) is used to identify the file extension which determines how the embed should be formatted.
-- Check for self-references and cycles when defining [`opts.resolveEmbedContent()`](#resolveembedcontent-env-any-fname-string--string--undefined).
+- Check for self-references and cycles when defining [`opts.resolveEmbedContent()`](#resolveembedcontent-env-any-fname-string-htext-string--undefined--string--undefined).
 
 For metadata population:
 - `addAttr`
@@ -151,9 +151,9 @@ A boolean property that toggles parsing/rendering wikilinks on/off.
 
 A function which takes in markdown-it's `env` var and the `fname` extracted from a wikilink `[[fname]]`. It should return a string which is the name of the file's document type or `undefined` if no document type exists. (Relevant file data should be stored in `env`, but if not `fname` can be used to search for the file instead.)
 
-### `resolveEmbedContent: (env: any, fname: string) => string | undefined`
+### `resolveEmbedContent: (env: any, fname: string, hText?: string | undefined) => string | undefined`
 
-A function which takes in markdown-it's `env` var and the `fname` extracted from a wikilink `[[fname]]`. It should return the content of an embedded markdown file. Be sure to handle self references and cycles with care when re-using the markdown-it instance to re-render content (e.g. `md.render(content)`).
+A function which takes in markdown-it's `env` var, the filename (`fname`), and optionally the header text (`hText`) extracted from a wikiembed `![[fname#header-text]]`. For full-doc embeds (no header) `hText` is omitted or `undefined`. It should return the content of an embedded markdown file. Be sure to handle self references and cycles with care when re-using the markdown-it instance to re-render content (e.g. `md.render(content)`).
 
 ### `resolveHtmlHref: (env: any, fname: string) => string | undefined`
 

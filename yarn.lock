@@ -3591,15 +3591,15 @@ which@^2.0.1:
   dependencies:
     isexe "^2.0.0"
 
-wikirefs-spec@^0.0.4-spec:
-  version "0.0.4-spec"
-  resolved "https://registry.yarnpkg.com/wikirefs-spec/-/wikirefs-spec-0.0.4-spec.tgz#0114e9c9ba7eacff10356aa9b89cfb8ec271417e"
-  integrity sha512-ZNGCfCZjd2b/DGlEPHM9wSTVxcSHdDVotiIE0QXqP5/AWqZlE43W7s/vdYQFxCyYnMO0VWS8H/GGsIoIVB3jUg==
+wikirefs-spec@^0.0.5-spec:
+  version "0.0.5-spec"
+  resolved "https://registry.yarnpkg.com/wikirefs-spec/-/wikirefs-spec-0.0.5-spec.tgz#6d291c9746440f88cc360d4771fa511c3270828e"
+  integrity sha512-POaCb18YFRfXEYLM5OkPogv1/T0/r/doGZHpVxyorWME11HBFxosXH/yUIT4Jm9Npdvubw+du1j7St46pWFDEA==
 
-wikirefs@^0.0.4:
-  version "0.0.4"
-  resolved "https://registry.yarnpkg.com/wikirefs/-/wikirefs-0.0.4.tgz#edf0163c15e72e644fc6e36339b7fa4d362cd811"
-  integrity sha512-R4rKxGToR5ejpNKVfTOzhcKHvWR+4F3WaAy+ACWvDiDIrspWjabXdepWSYrbnrBlzorjMVUT98KVw9nJi8UAMQ==
+wikirefs@^0.0.8:
+  version "0.0.8"
+  resolved "https://registry.yarnpkg.com/wikirefs/-/wikirefs-0.0.8.tgz#1b8738d13334390d346badbe0f0c6c938d29e93e"
+  integrity sha512-vGqW+klNCWBbrXa4oKXdJKvRf40VpBr6u49FVpHCO/KFfpCBfua9j/mn0PyuPT0KYbqrBKJzMCOqT2+eeq2v6A==
   dependencies:
     escape-mkdn "^0.0.3"
 

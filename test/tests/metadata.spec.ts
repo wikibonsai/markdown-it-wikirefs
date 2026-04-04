@@ -46,13 +46,13 @@ describe('metadata', () => {
       md.render('[[fname-b]].', env);
       assert.strictEqual(fakePrepFile.called, true);
       assert.strictEqual(fakeAddLink.called, true);
-      assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, '', 'fname-b']);
+      assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, '', 'fname-b', undefined]);
       assert.strictEqual(fakePrepFile.calledBefore(fakeAddLink), true);
 
       // second round //
       md.render('[[fname-a]].', env);
       assert.strictEqual(fakePrepFile.called, true);
-      assert.deepStrictEqual(fakeAddLink.getCall(1).args, [env, '', 'fname-a']);
+      assert.deepStrictEqual(fakeAddLink.getCall(1).args, [env, '', 'fname-a', undefined]);
       assert.strictEqual(fakePrepFile.calledBefore(fakeAddLink), true);
     });
 
@@ -91,25 +91,43 @@ describe('metadata', () => {
       it('untyped; base', () => {
         md.render('[[fname-a]].', env);
         assert.strictEqual(fakeAddLink.called, true);
-        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, '', 'fname-a']);
+        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, '', 'fname-a', undefined]);
       });
-  
+
       it('untyped; labelled', () => {
         md.render('[[fname-a|label]].', env);
         assert.strictEqual(fakeAddLink.called, true);
-        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, '', 'fname-a']);
+        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, '', 'fname-a', undefined]);
       });
-  
+
       it('typed; base', () => {
         md.render(':linktype::[[fname-a]].', env);
         assert.strictEqual(fakeAddLink.called, true);
-        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, 'linktype', 'fname-a']);
+        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, 'linktype', 'fname-a', undefined]);
       });
-  
+
       it('typed; labelled', () => {
         md.render(':linktype::[[fname-a|label]].', env);
         assert.strictEqual(fakeAddLink.called, true);
-        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, 'linktype', 'fname-a']);
+        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, 'linktype', 'fname-a', undefined]);
+      });
+
+      it('untyped; header', () => {
+        md.render('[[fname-a#header-text]].', env);
+        assert.strictEqual(fakeAddLink.called, true);
+        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, '', 'fname-a', 'header-text']);
+      });
+
+      it('typed; header', () => {
+        md.render(':linktype::[[fname-a#header-text]].', env);
+        assert.strictEqual(fakeAddLink.called, true);
+        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, 'linktype', 'fname-a', 'header-text']);
+      });
+
+      it('untyped; header; Title Case', () => {
+        md.render('[[fname-a#Header Text]].', env);
+        assert.strictEqual(fakeAddLink.called, true);
+        assert.deepStrictEqual(fakeAddLink.getCall(0).args, [env, '', 'fname-a', 'Header Text']);
       });
 
     });
@@ -119,7 +137,13 @@ describe('metadata', () => {
       it('base', () => {
         md.render('![[fname-a]]', env);
         assert.strictEqual(fakeAddEmbed.called, true);
-        assert.deepStrictEqual(fakeAddEmbed.getCall(0).args, [env, 'fname-a']);
+        assert.deepStrictEqual(fakeAddEmbed.getCall(0).args, [env, 'fname-a', undefined]);
+      });
+
+      it('header', () => {
+        md.render('![[fname-a#header-text]]', env);
+        assert.strictEqual(fakeAddEmbed.called, true);
+        assert.deepStrictEqual(fakeAddEmbed.getCall(0).args, [env, 'fname-a', 'header-text']);
       });
 
     });
