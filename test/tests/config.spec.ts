@@ -64,10 +64,11 @@ describe('configs', () => {
         opts: merge(mockOpts, wikiattrOpts),
         mkdn: ':attrtype::[[fname-a]]\n',
         html: '<aside class="attrbox">\n'
-            + '<span class="attrbox-title">Attributes</span>\n'
             + '<dl>\n'
+            + '<div class="attr-item">\n'
             + '<dt>attrtype</dt>\n'
             + '<dd><a class="attr wiki reftype__attrtype" href="/tests/fixtures/fname-a" data-href="/tests/fixtures/fname-a">title a</a></dd>\n'
+            + '</div>\n'
             + '</dl>\n'
             + '</aside>\n',
       },
@@ -193,10 +194,11 @@ describe('configs', () => {
         opts: mockOpts,
         mkdn: 'attrtype::[[fname-a]]\n',
         html: '<aside class="attrbox">\n'
-            + '<span class="attrbox-title">Attributes</span>\n'
             + '<dl>\n'
+            + '<div class="attr-item">\n'
             + '<dt>attrtype</dt>\n'
             + '<dd><a class="attr wiki reftype__attrtype doctype__doctype" href="/fname-a" data-href="/fname-a">fname a</a></dd>\n'
+            + '</div>\n'
             + '</dl>\n'
             + '</aside>\n',
       },
@@ -205,10 +207,11 @@ describe('configs', () => {
         opts: mockOpts,
         mkdn: ':attrtype::[[fname-a]]\n',
         html: '<aside class="attrbox">\n'
-            + '<span class="attrbox-title">Attributes</span>\n'
             + '<dl>\n'
+            + '<div class="attr-item">\n'
             + '<dt>attrtype</dt>\n'
             + '<dd><a class="attr wiki reftype__attrtype doctype__doctype" href="/fname-a" data-href="/fname-a">fname a</a></dd>\n'
+            + '</div>\n'
             + '</dl>\n'
             + '</aside>\n',
       },

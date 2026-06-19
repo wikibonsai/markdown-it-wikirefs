@@ -228,7 +228,7 @@ export const wikiattrs = (md: MarkdownIt, opts: WikiAttrsOptions): void => {
 
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   function wikiattr_open(tokens: Token[], index: number, mdOpts: MarkdownIt.Options, env?: any): string {
-    return `<aside class="${opts.cssNames.attrbox}">\n<span class="${opts.cssNames.attrboxTitle}">${opts.attrs.title}</span>\n<dl>\n`;
+    return `<aside class="${opts.cssNames.attrbox}">\n<dl>\n`;
   }
 
   // attr : key : attrtype
@@ -236,7 +236,14 @@ export const wikiattrs = (md: MarkdownIt, opts: WikiAttrsOptions): void => {
   function wikiattr_key(tokens: Token[], index: number, mdOpts: MarkdownIt.Options, env?: any): string {
     const token: Token = tokens[index];
     const attrtype: string | null = token.attrGet('key');
-    return attrtype ? `<dt>${attrtype}</dt>\n` : '<dt>attrtype error</dt>\n';
+    // Check if there's a previous wikiattr_key (meaning we need to close the previous group div)
+    let hasPriorKey = false;
+    for (let i = index - 1; i >= 0; i--) {
+      if (tokens[i].type === 'wikiattr_key') { hasPriorKey = true; break; }
+      if (tokens[i].type === 'wikiattr_open') { break; }
+    }
+    const prefix: string = hasPriorKey ? '</div>\n<div class="attr-item">\n' : '<div class="attr-item">\n';
+    return attrtype ? `${prefix}<dt>${attrtype}</dt>\n` : `${prefix}<dt>attrtype error</dt>\n`;
   }
 
   // attr : val(s) : item(s)
@@ -283,6 +290,6 @@ export const wikiattrs = (md: MarkdownIt, opts: WikiAttrsOptions): void => {
   /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
   function wikiattr_close(tokens: Token[], index: number, mdOpts: MarkdownIt.Options, env?: any): string {
     delete env.cur_attr_type;
-    return '</dl>\n</aside>\n';
+    return '</div>\n</dl>\n</aside>\n';
   }
 };
